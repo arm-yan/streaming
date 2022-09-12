@@ -2,19 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 class UserController
 {
-    public function dashboard()
+    /**
+     * @return View
+     */
+    public function dashboard(): View
     {
         return view('dashboard');
     }
 
-    public function login()
+    /**
+     * @return View
+     */
+    public function login(): View
     {
         return view('login');
     }
 
-    public function register()
+    /**
+     * @return View
+     */
+    public function register(): View
     {
         return view('registration');
     }

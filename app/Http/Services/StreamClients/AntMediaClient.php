@@ -9,18 +9,35 @@ use GuzzleHttp\Client;
 
 class AntMediaClient implements StreamClientInterface
 {
+    /**
+     * Guzzle Client
+     * @var Client
+     */
     private Client $client;
 
-    private string $endpoint = 'http://89.22.229.228:5080/TestApp/rest/v2';
+    /**
+     * Broadcast server endpoint
+     *
+     * @var string
+     */
+    private string $endpoint;
 
+    /**
+     * Errors array
+     *
+     * @var array
+     */
     private array $error;
 
     public function __construct()
     {
+        $this->endpoint = getenv('BROADCAST_SERVER').'/rest/v2';
         $this->client = new Client();
     }
 
     /**
+     * Get broadcast by ID
+     *
      * @param string $id
      * @return StreamDTO
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -28,13 +45,17 @@ class AntMediaClient implements StreamClientInterface
      */
     public function getById(string $id): StreamDTO
     {
+        //Get broadcast object from the broadcast platform
         $res = $this->client->request('GET', $this->endpoint.'/broadcasts/'.$id);
+
         $stream = json_decode($res->getBody()->getContents(), true);
 
         return new StreamDTO($stream);
     }
 
     /**
+     * Create broadcast object in the broadcast platform
+     *
      * @param CreateStreamDTO $data
      * @return StreamDTO
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -55,6 +76,7 @@ class AntMediaClient implements StreamClientInterface
     }
 
     /**
+     * Updates broadcast object in the broadcast platform
      * @param StreamDTO $stream
      * @return bool
      * @throws \GuzzleHttp\Exception\GuzzleException
